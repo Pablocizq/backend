@@ -1,0 +1,38 @@
+server:
+  bind:
+    host: 0.0.0.0
+    port: 5000
+  url: http://localhost:5000
+  cors: true
+  pretty_print: true
+
+  language: es-ES
+  languages:
+    - es-ES
+    - en-US
+
+metadata:
+  identification:
+    title: ByronSpace Geo API
+    description: API geográfica para el sistema de reservas del edificio Ada Byron
+    keywords:
+      - reservas
+      - unizar
+      - postgis
+    terms_of_service: https://example.org/terms
+    url: http://localhost:5000
+  license:
+    name: CC BY 4.0
+    url: https://creativecommons.org/licenses/by/4.0/
+  provider:
+    name: Universidad de Zaragoza
+    url: https://www.unizar.es
+  contact:
+    name: Equipo ByronSpace
+    email: soporte@byronspace.local
+
+resources: {}
+
+logging:
+  level: INFO
+  logfile: /tmp/pygeoapi.log
