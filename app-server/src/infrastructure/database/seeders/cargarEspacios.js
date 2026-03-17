@@ -1,5 +1,9 @@
 const fs = require('fs');
 const path = require('path');
+const {
+  normalizarCategoriaInicial,
+  esReservableInicialmente,
+} = require("../../../domain/policies/EspacioPolicy");
 
 async function cargarEspacios(sequelize) {
   const [rows] = await sequelize.query('SELECT COUNT(*) as count FROM espacios');
@@ -23,12 +27,14 @@ async function cargarEspacios(sequelize) {
     for (const feature of geojson.features) {
       const props = feature.properties;
       if (!props?.EDIFICIO?.toUpperCase().includes('ADA BYRON')) continue;
-      if (!feature.geometry?.coordinates) continue;
+      if (!feature.geometry?.coordinates) continue;      try {
+        const uso = props.USO || null;
+        const categoriaNormalizada = normalizarCategoriaInicial(uso);
+        const esReservable = esReservableInicialmente(categoriaNormalizada);
 
-      try {
         await sequelize.query(`
           INSERT INTO espacios (gid, id_espacio, nombre, uso, categoria, edificio, planta, superficie, reservable, aforo, geom)
-          VALUES (:gid, :id_espacio, :nombre, :uso, :categoria, :edificio, :planta, :superficie, false, :aforo,
+          VALUES (:gid, :id_espacio, :nombre, :uso, :categoria, :edificio, :planta, :superficie, :reservable, :aforo,
                   ST_SetSRID(ST_GeomFromGeoJSON(:geom), 4326))
           ON CONFLICT (gid) DO NOTHING
         `, {
@@ -36,11 +42,12 @@ async function cargarEspacios(sequelize) {
             gid: feature.id,
             id_espacio: props.ID_ESPACIO || null,
             nombre: props.Nombre || props.NOMBRE || null,
-            uso: props.USO || null,
-            categoria: props.USO || null,  // INICIALMENTE IGUAL A USO
+            uso: uso,
+            categoria: categoriaNormalizada,  // NORMALIZADA según EspacioPolicy
             edificio: props.EDIFICIO || null,
             planta: props.Altura || props.PLANTA || null,
             superficie: props.SUPERFICIE || null,
+            reservable: esReservable,  // true/false según la categoría
             aforo: null,
             geom: JSON.stringify(feature.geometry)
           }

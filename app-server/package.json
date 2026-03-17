@@ -5,8 +5,10 @@
   "type": "commonjs",
   "scripts": {
     "start": "node src/main.js"
-  },
+  },  
+  
   "dependencies": {
+    "express": "^4.19.2",
     "amqplib": "^0.10.4",
     "sequelize": "^6.32.1",
     "pg": "^8.11.0",
