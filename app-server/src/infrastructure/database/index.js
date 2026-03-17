@@ -1,5 +1,7 @@
 const { Sequelize } = require('sequelize');
 const EspacioModel = require('./models/Espacio');
+const ReservaModel = require('./models/Reserva');
+const UsuarioModel = require('./models/Usuario');
 const cargarEspacios = require('./seeders/cargarEspacios');
 
 const sequelize = new Sequelize(
@@ -19,6 +21,8 @@ const sequelize = new Sequelize(
 );
 
 const Espacio = EspacioModel(sequelize);
+const Reserva = ReservaModel(sequelize);
+const Usuario = UsuarioModel(sequelize);
 
 async function conectar() {
   let intentos = 0;
@@ -45,4 +49,4 @@ async function conectar() {
   await cargarEspacios(sequelize);
 }
 
-module.exports = { sequelize, Espacio, conectar };
+module.exports = { sequelize, Espacio, Reserva, conectar };
