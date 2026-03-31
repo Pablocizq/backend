@@ -1,9 +1,13 @@
 class ReservarEspacioUseCase {
-  constructor({ espacioRepository, reservaRepository, ReservaEntity }) {
+  constructor({ espacioRepository, reservaRepository, ReservaEntity, usuarioRepository, ReservaPolicy }) {
     this.espacioRepository = espacioRepository;
     this.reservaRepository = reservaRepository;
     this.ReservaEntity = ReservaEntity;
-  }  async execute({ espacioId, usuarioId, fecha, horaInicio, duracion, numPersonas, tipoUso, descripcion }) {
+    this.usuarioRepository = usuarioRepository;
+    this.ReservaPolicy = ReservaPolicy;
+  }
+
+  async execute({ espacioId, usuarioId, fecha, horaInicio, duracion, numPersonas, tipoUso, descripcion }) {
     if (!espacioId) {
       throw new Error("El id del espacio es obligatorio");
     }

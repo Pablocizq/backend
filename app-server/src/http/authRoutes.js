@@ -1,6 +1,8 @@
 const express = require("express");
 
-module.exports = ({ loginUseCase, obtenerRestriccionesUseCase }) => (app) => {  app.post("/auth/login", async (req, res, next) => {
+module.exports = ({ loginUseCase, obtenerRestriccionesUseCase }) => (app) => {  
+  
+  app.post("/auth/login", async (req, res, next) => {
     try {
       const { email, password } = req.body;
 
