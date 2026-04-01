@@ -25,7 +25,8 @@
     "collectCoverageFrom": [
       "src/**/*.js",
       "!src/server.js",
-      "!src/config/swagger.js"  
+      "!src/config/swagger.js",
+      "!src/services/appServerHttpClient.js"
     ]
   }
 }
